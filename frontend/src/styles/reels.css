@@ -1,0 +1,332 @@
+@import './theme.css';
+
+/* Page container ensures full viewport and background */
+.reels-page {
+  height: 100dvh;
+  background: var(--color-bg);
+  overflow: hidden; /* parent hides overscroll glow on iOS */
+}
+
+/* Vertical feed with snap scrolling */
+.reels-feed {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  padding-top: 60px; /* space for sticky header */
+  padding-bottom: calc(var(--bottom-nav-height, 64px) + 20px); /* space for bottom nav */
+}
+
+/* Each reel takes full viewport */
+.reel {
+  position: relative;
+  height: 100dvh;
+  width: 100%;
+  scroll-snap-align: start;
+  background: #000; /* fallback while video loads */
+}
+
+.reel-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background: #000;
+}
+
+/* Overlay: content sits on top of video */
+:root {
+  --bottom-nav-height: 64px;
+  --bottom-nav-margin: 12px;
+  --bottom-nav-offset: calc(var(--bottom-nav-height) + var(--bottom-nav-margin));
+  --overlay-elevation: 72px; /* default overlay shift above nav */
+}
+
+.reel-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--bottom-nav-offset) + var(--overlay-elevation) + env(safe-area-inset-bottom, 0px));
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+  color: var(--primary-contrast);
+  pointer-events: none;
+  z-index: 30;
+  overflow: visible;
+}
+
+/* hide any gradient element so it doesn't add shading */
+.reel-overlay-gradient { display: none; }
+
+/* content wrapper — description + button */
+.reel-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  align-items: flex-start;
+  pointer-events: none; /* overlay non-interactive except buttons */
+  margin-bottom: 0;
+  color: #fff;
+}
+
+/* Description text */
+.reel-desc {
+  font-size: 15px;
+  line-height: 1.25;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  hyphens: auto;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.45);
+  pointer-events: none;
+  width: 100%;
+}
+
+/* Visit Store button */
+.reel-btn {
+  pointer-events: auto;
+  align-self: flex-start;
+  background: #e6f5ff;
+  color: #055a8c;
+  padding: 10px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  border: 1px solid rgba(5,90,140,0.12);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 6px 18px rgba(5,90,140,0.08);
+  transition: transform 120ms ease, background 120ms ease, box-shadow 120ms ease;
+  z-index: 3;
+  white-space: nowrap;
+  font-size: 14px;
+  width: auto;
+  max-width: 240px;
+  min-width: 88px;
+  justify-content: center;
+}
+
+.reel-btn:hover,
+.reel-btn:active { transform: translateY(-2px); background: #d0eeff; box-shadow: 0 10px 24px rgba(5,90,140,0.12); }
+.reel-btn:focus { outline: 2px solid rgba(3,105,161,0.18); outline-offset: 3px; box-shadow: 0 10px 24px rgba(5,90,140,0.14); }
+
+/* Right-side vertical actions */
+.reel-actions {
+  position: absolute;
+  right: 12px;
+  bottom: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 8;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.reel-action {
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,0.28);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.45);
+  cursor: pointer;
+}
+
+.reel-action svg { stroke: currentColor; stroke-width: 1.2; }
+.reel-action__count { font-size: 12px; color: #fff; }
+.reel-action:active { transform: translateY(1px); }
+.reel-action-group { display: flex; flex-direction: column; align-items: center; gap: 6px; color: #fff; }
+
+/* Empty state */
+.empty-state {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  color: #555;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+/* bottom navigation */
+.bottom-nav {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  gap: 8px;
+  justify-content: space-around;
+  background: rgba(0,0,0,0.36);
+  border-radius: 14px;
+  padding: 8px 12px;
+  z-index: 20;
+  align-items: center;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.55);
+  pointer-events: auto;
+  backdrop-filter: blur(8px);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: rgba(214,219,227,0.9);
+  text-decoration: none;
+  font-size: 12px;
+  padding: 6px 8px;
+}
+
+.nav-item svg { stroke: currentColor; }
+.nav-item[aria-current="page"] {
+  color: var(--color-accent);
+  background: rgba(37,99,235,0.08);
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+/* Saved page specific styles ------------------------------------------------- */
+/* Switch the feed to a responsive grid when inside .saved-page */
+.saved-page .reels-feed {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  padding: 16px;
+  height: calc(100dvh - 84px); /* room for header and safe area */
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* Make reel items behave like cards instead of full-viewport panels */
+.saved-page .reel {
+  position: relative;
+  height: 0;
+  padding-bottom: calc(100% * 3 / 4); /* 4:3 aspect ratio cards */
+  scroll-snap-align: none;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+}
+
+/* Thumbnail video fills the card */
+.saved-page .reel-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+}
+
+/* Header area for Saved page */
+.saved-header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  background: linear-gradient(180deg, rgba(0,0,0,0.02), transparent);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  backdrop-filter: blur(6px);
+}
+
+/* Back button */
+.back-home-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--color-accent);
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.back-home-btn:hover { background: color-mix(in srgb, var(--color-accent) 8%, transparent); }
+.back-home-btn:active { transform: translateY(1px); }
+
+/* Overlay on thumbnails: small translucent panel at card bottom */
+.saved-page .reel-overlay {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  padding: 8px 10px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.36));
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  pointer-events: none; /* preserve card-level click behavior; buttons can override */
+}
+
+/* ensure Visit store button works and is compact on cards */
+.saved-page .reel-content { width: 100%; pointer-events: none; }
+.saved-page .reel-content .reel-description {
+  margin: 0;
+  font-size: 13px;
+  color: #fff;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+.saved-page .reel-btn {
+  pointer-events: auto;
+  align-self: flex-start;
+  padding: 8px 12px;
+  font-size: 13px;
+  min-width: 72px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.4);
+}
+
+/* Empty state styling */
+.saved-page .empty-state {
+  display: grid;
+  place-items: center;
+  padding: 36px;
+  color: var(--color-text-secondary);
+}
+
+/* Small screens: fewer columns and tighter spacing */
+@media (max-width: 520px) {
+  .saved-page .reels-feed { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px; height: calc(100dvh - 72px); }
+  .saved-page .reel { padding-bottom: calc(100% * 4 / 5); } /* slightly taller on small screens */
+  .saved-page .reel-overlay { left: 6px; right: 6px; bottom: 6px; padding: 8px; }
+  .saved-header { padding: 10px; }
+}
+
+/* Desktop tweaks */
+@media (min-width: 768px) {
+  .reel-content { padding: 36px; }
+  .reel-desc { font-size: 1.05rem; max-width: 70ch; }
+}

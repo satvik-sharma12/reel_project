@@ -1,0 +1,57 @@
+/* Root theme variables for light mode */
+:root {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --text: #0f1724;
+  --muted: #6b7280;
+  --primary: #2563eb;
+  --primary-contrast: #ffffff;
+  --input-bg: #f3f4f6;
+  --border: #e6e9ef;
+  --radius: 12px;
+  --shadow: 0 6px 18px rgba(15, 23, 36, 0.06);
+}
+
+/* aliases and utility tokens used by create-food.css */
+:root {
+  /* color mappings */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--input-bg);
+  --color-text: var(--text);
+  --color-text-secondary: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--primary);
+  --color-accent-hover: #1e4acb; /* subtle darker accent for hover */
+  --color-danger: #dc2626;
+
+  /* spacing tokens */
+  --space-2: 6px;
+  --space-3: 8px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 28px;
+
+  /* radii & shadows */
+  --radius-md: var(--radius);
+  --radius-sm: 10px;
+  --shadow-md: var(--shadow);
+
+  /* transitions */
+  --transition-base: 160ms;
+}
+
+/* Dark mode overrides using system preference */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b1120;
+    --surface: #0f1724;
+    --text: #e6eef8;
+    --muted: #9aa6bc;
+    --primary: #3b82f6;
+    --primary-contrast: #06202b;
+    --input-bg: #0b1220;
+    --border: rgba(255,255,255,0.06);
+    --shadow: 0 8px 24px rgba(2,6,23,0.6);
+  }
+}

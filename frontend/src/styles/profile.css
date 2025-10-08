@@ -1,0 +1,163 @@
+@import './theme.css';
+
+/* Root layout */
+.profile-page {
+  min-height: 100vh;
+  padding: 28px;
+  background: linear-gradient(180deg, var(--bg), var(--bg));
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Header */
+.profile-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  width: 100%;
+}
+
+/* Left meta: avatar + info */
+.profile-meta {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  min-width: 0;
+}
+
+.profile-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 14px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  flex: 0 0 88px;
+}
+
+/* Business name & address */
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.profile-business {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-address {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 48ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Stats */
+.profile-stats {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-left: auto;
+}
+
+.profile-stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  border-radius: 10px;
+  text-align: center;
+  min-width: 96px;
+  box-shadow: var(--shadow);
+}
+
+.profile-stat-label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.profile-stat-value {
+  display: block;
+  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Separator */
+.profile-sep {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 16px 0;
+}
+
+/* Video grid */
+.profile-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  align-items: stretch;
+}
+
+/* Each tile keeps a consistent aspect ratio */
+.profile-grid-item {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5; /* portrait-style tiles; adjust as needed */
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+/* Video within tile fills and is cropped */
+.profile-grid-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+}
+
+/* Hover subtle lift */
+.profile-grid-item:hover {
+  transform: translateY(-4px);
+  transition: transform 160ms ease;
+}
+
+/* Responsive tweaks */
+@media (max-width: 900px) {
+  .profile-avatar { width: 72px; height: 72px; flex: 0 0 72px; border-radius: 12px; }
+  .profile-business { font-size: 18px; }
+  .profile-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  .profile-stat { min-width: 84px; padding: 6px 10px; }
+}
+
+@media (max-width: 520px) {
+  .profile-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .profile-stats { margin-left: 0; }
+  .profile-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .profile-grid-item { aspect-ratio: 3 / 4; }
+  .profile-avatar { width: 64px; height: 64px; flex: 0 0 64px; }
+}
+
+/* Accessibility: ensure focus outlines on interactive elements if added later */
+.profile-grid-item:focus-within,
+.profile-grid-item:focus {
+  outline: 3px solid rgba(37,99,235,0.12);
+  outline-offset: 4px;
+}
