@@ -41,12 +41,12 @@ const AppRoutes = () => {
   return(
     <Router>
       <Routes>
-        {/* <Route path="/" element={<Landing />} /> */}
+        <Route path="/" element={<Landing />} />
         <Route path="/user/register" element={<UserRegister />} />
         <Route path="/user/login" element={<UserLogin />} />
         <Route path="/food-partner/register" element={<FoodPartnerRegister />} />
         <Route path="/food-partner/login" element={<FoodPartnerLogin />} />
-        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/saved" element={<Saved />} />
         <Route path="/create-food" element={<CreateFoodPartner />} />
         <Route path="/food-partner/:id" element={<Profile />} />
